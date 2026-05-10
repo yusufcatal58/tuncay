@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
 import {
   brand,
   contact,
@@ -42,6 +45,23 @@ function SectionTitle({
 }
 
 export default function Home() {
+  const desktopHeroVideoRef = useRef<HTMLVideoElement | null>(null);
+  const mobileHeroVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [heroSoundOn, setHeroSoundOn] = useState(false);
+
+  const enableHeroSound = async () => {
+    const video = desktopHeroVideoRef.current ?? mobileHeroVideoRef.current;
+    if (!video) return;
+    video.muted = false;
+    video.volume = 1;
+    try {
+      await video.play();
+      setHeroSoundOn(true);
+    } catch {
+      setHeroSoundOn(false);
+    }
+  };
+
   return (
     <main className="grain overflow-hidden">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-10 pt-4 sm:px-6 lg:px-8">
@@ -92,42 +112,37 @@ export default function Home() {
         <section className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
           <div className="section-frame relative overflow-hidden rounded-[2.5rem] p-5 sm:p-7 lg:p-10">
             <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,rgba(31,111,122,0.96),rgba(49,95,138,0.78),rgba(87,164,181,0.88))]" />
-            <div className="mb-6 overflow-hidden rounded-[1.8rem] border border-white/60 bg-white/75 shadow-[0_18px_45px_rgba(18,34,42,0.06)]">
-              <div className="grid gap-0 md:grid-cols-[1.15fr_0.85fr]">
-                <div className="flex flex-col justify-between p-5 sm:p-6">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--accent)]" />
-                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[color:var(--accent)]">
-                      Köyümüzden
-                    </p>
-                  </div>
-                  <div className="mt-4 max-w-md">
-                    <p className="display text-2xl leading-tight text-[color:var(--ink)] sm:text-3xl">
-                      Günlük yaşamdan sıcak ve gerçek bir an.
-                    </p>
-                    <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
-                      Sarısuat’ın doğallığını hissettiren kısa bir video kare.
-                    </p>
-                  </div>
-                </div>
 
-                <div className="relative min-h-[180px] overflow-hidden md:min-h-[220px]">
+            <div className="absolute inset-x-0 bottom-0 top-16 pointer-events-none">
+              <div className="absolute right-0 bottom-0 hidden h-full w-[44%] p-5 lg:block">
+                <div className="relative ml-auto h-full w-full max-w-[360px] overflow-hidden rounded-[2.4rem] border border-white/55 bg-white/35 shadow-[0_30px_80px_rgba(18,34,42,0.14)]">
                   <video
+                    ref={desktopHeroVideoRef}
                     className="absolute inset-0 h-full w-full object-cover"
                     autoPlay
-                    muted
                     loop
                     playsInline
+                    preload="auto"
                     poster="/videos/koyumuzden-poster.jpg"
                   >
                     <source src="/videos/koyumuzden.mp4" type="video/mp4" />
                   </video>
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,34,42,0.06),rgba(18,34,42,0.34))]" />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,34,42,0.02),rgba(18,34,42,0.38))]" />
+                  <div className="absolute left-4 top-4 rounded-full border border-white/25 bg-white/14 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md">
+                    Köyümüzden
+                  </div>
+                  <button
+                    type="button"
+                    onClick={enableHeroSound}
+                    className="absolute bottom-4 left-4 rounded-full border border-white/25 bg-white/16 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white backdrop-blur-md transition hover:bg-white/24"
+                  >
+                    {heroSoundOn ? "Ses açık" : "Sesi aç"}
+                  </button>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="relative z-10 flex flex-wrap gap-2 pr-0 lg:pr-[42%]">
               {highlights.map((item) => (
                 <span
                   key={item}
@@ -138,7 +153,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-8 max-w-2xl">
+            <div className="relative z-10 mt-8 max-w-2xl pr-0 lg:pr-[42%]">
               <p className="text-xs font-semibold uppercase tracking-[0.45em] text-[color:var(--accent)]">
                 Sivas köy yaşamından ilham alan marka
               </p>
@@ -151,7 +166,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="relative z-10 mt-8 flex flex-wrap items-center gap-3 pr-0 lg:pr-[42%]">
               <a
                 href="#urunler"
                 className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(31,111,122,1),rgba(49,95,138,0.95))] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(31,111,122,0.16)] transition hover:-translate-y-0.5"
@@ -169,7 +184,36 @@ export default function Home() {
               </span>
             </div>
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            <div className="relative z-10 mt-8 lg:hidden">
+              <div className="mx-auto w-full max-w-[270px] overflow-hidden rounded-[2rem] border border-white/55 bg-white/35 shadow-[0_24px_60px_rgba(18,34,42,0.14)]">
+                <div className="relative aspect-[9/16] w-full">
+                  <video
+                    ref={mobileHeroVideoRef}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="auto"
+                    poster="/videos/koyumuzden-poster.jpg"
+                  >
+                    <source src="/videos/koyumuzden.mp4" type="video/mp4" />
+                  </video>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,34,42,0.02),rgba(18,34,42,0.38))]" />
+                  <div className="absolute left-4 top-4 rounded-full border border-white/25 bg-white/14 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md">
+                    Köyümüzden
+                  </div>
+                  <button
+                    type="button"
+                    onClick={enableHeroSound}
+                    className="absolute bottom-4 left-4 rounded-full border border-white/25 bg-white/16 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white backdrop-blur-md transition hover:bg-white/24"
+                  >
+                    {heroSoundOn ? "Ses açık" : "Sesi aç"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative z-10 mt-10 grid gap-3 sm:grid-cols-3 lg:pr-[42%]">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
@@ -185,7 +229,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-8 grid gap-3 border-t border-[color:var(--line)] pt-6 sm:grid-cols-[1.2fr_0.8fr]">
+            <div className="relative z-10 mt-8 grid gap-3 border-t border-[color:var(--line)] pt-6 sm:grid-cols-[1.2fr_0.8fr] lg:pr-[42%]">
               <div className="rounded-[1.6rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(255,250,242,0.7))] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--accent)]">
                   Kısa marka notu
