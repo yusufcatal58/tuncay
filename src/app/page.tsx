@@ -92,6 +92,41 @@ export default function Home() {
         <section className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
           <div className="section-frame relative overflow-hidden rounded-[2.5rem] p-5 sm:p-7 lg:p-10">
             <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,rgba(31,111,122,0.96),rgba(49,95,138,0.78),rgba(87,164,181,0.88))]" />
+            <div className="mb-6 overflow-hidden rounded-[1.8rem] border border-white/60 bg-white/75 shadow-[0_18px_45px_rgba(18,34,42,0.06)]">
+              <div className="grid gap-0 md:grid-cols-[1.15fr_0.85fr]">
+                <div className="flex flex-col justify-between p-5 sm:p-6">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--accent)]" />
+                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[color:var(--accent)]">
+                      Köyümüzden
+                    </p>
+                  </div>
+                  <div className="mt-4 max-w-md">
+                    <p className="display text-2xl leading-tight text-[color:var(--ink)] sm:text-3xl">
+                      Günlük yaşamdan sıcak ve gerçek bir an.
+                    </p>
+                    <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
+                      Sarısuat’ın doğallığını hissettiren kısa bir video kare.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="relative min-h-[180px] overflow-hidden md:min-h-[220px]">
+                  <video
+                    className="absolute inset-0 h-full w-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster="/videos/koyumuzden-poster.jpg"
+                  >
+                    <source src="/videos/koyumuzden.mp4" type="video/mp4" />
+                  </video>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,34,42,0.06),rgba(18,34,42,0.34))]" />
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-wrap gap-2">
               {highlights.map((item) => (
                 <span
