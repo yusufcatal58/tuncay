@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #fafaf7;
+  --paper-soft: #f4fbfa;
+  --ink: #12222a;
+  --muted: #5b6d74;
+  --line: rgba(28, 78, 88, 0.1);
+  --accent: #2b7d86;
+  --accent-2: #4d8fb0;
+  --accent-3: #98c9d0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-body-face);
+  --font-display: var(--font-display-face);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(43, 125, 134, 0.16), transparent 34%),
+    radial-gradient(circle at 85% 12%, rgba(77, 143, 176, 0.12), transparent 26%),
+    radial-gradient(circle at 20% 85%, rgba(152, 201, 208, 0.14), transparent 24%),
+    linear-gradient(180deg, #ffffff 0%, #f3fbfb 52%, #edf6f4 100%);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body-face), Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: transparent;
+}
+
+::selection {
+  background: rgba(43, 125, 134, 0.18);
+  color: var(--ink);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mix-blend-mode: soft-light;
+  z-index: -1;
+}
+
+.section-frame {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 60px rgba(18, 34, 42, 0.07);
+  backdrop-filter: blur(12px);
+}
+
+.display {
+  font-family: var(--font-display-face), Georgia, serif;
 }
