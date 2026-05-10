@@ -50,7 +50,12 @@ export default function Home() {
   const [heroSoundOn, setHeroSoundOn] = useState(false);
 
   const enableHeroSound = async () => {
-    const video = desktopHeroVideoRef.current ?? mobileHeroVideoRef.current;
+    const isDesktop =
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 1024px)").matches;
+    const video = isDesktop
+      ? desktopHeroVideoRef.current ?? mobileHeroVideoRef.current
+      : mobileHeroVideoRef.current ?? desktopHeroVideoRef.current;
     if (!video) return;
     video.muted = false;
     video.volume = 1;
@@ -329,6 +334,15 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <button
+          type="button"
+          onClick={enableHeroSound}
+          className="fixed bottom-4 right-4 z-50 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/92 px-4 py-3 text-sm font-semibold text-[color:var(--ink)] shadow-[0_20px_50px_rgba(18,34,42,0.18)] backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white sm:bottom-6 sm:right-6"
+        >
+          <span className="flex h-2.5 w-2.5 rounded-full bg-[linear-gradient(135deg,rgba(31,111,122,1),rgba(49,95,138,1))]" />
+          {heroSoundOn ? "Ses açık" : "Sesi aç"}
+        </button>
 
         <section id="urunler" className="mt-6 rounded-[2.25rem] bg-[color:var(--paper-soft)] px-5 py-10 shadow-[0_18px_60px_rgba(55,35,18,0.06)] sm:px-7 lg:px-10">
           <SectionTitle
